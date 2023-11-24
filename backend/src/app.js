@@ -1,7 +1,6 @@
 const express = require('express');
 
-const routerProducts = require('./routes/products.routes');
-const routerSales = require('./routes/sales.routes');
+const { productRoutes, salesRoutes } = require('./routes');
 
 const app = express();
 
@@ -10,7 +9,7 @@ app.get('/', (_request, response) => {
   response.json({ status: 'Store Manager UP!' });
 });
 
-app.use('/products', routerProducts);
-app.use('/sales', routerSales);
+app.use('/products', productRoutes);
+app.use('/sales', salesRoutes);
 
 module.exports = app;
