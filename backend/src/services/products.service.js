@@ -1,7 +1,7 @@
-const model = require('../models/products.model');
+const model = require('../models/index');
 
 const getProduct = async () => {
-  const products = await model.getProducts();
+  const products = await model.getProduct();
 
   if (!products) {
     return { status: 404, message: 'Products not found' };
