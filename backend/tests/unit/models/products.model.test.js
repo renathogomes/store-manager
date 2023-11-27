@@ -3,8 +3,8 @@ const sinon = require('sinon');
 
 const { expect } = chai;
 
-const connection = require('../../../models/connection');
-const productsModel = require('../../../models/products.model');
+const connection = require('../../../src/models/connection');
+const productsModel = require('../../../src/models/products.model');
 const productsMock = require('../../mock/products.mock');
 
 describe('Testa o model de produtos', function () {

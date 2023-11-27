@@ -4,8 +4,8 @@ const sinon = require('sinon');
 const { expect } = chai;
 
 const productsMock = require('../../mock/products.mock');
-const ProductsService = require('../../../services/products.service');
-const productsModel = require('../../../models/products.model');
+const ProductsService = require('../../../src/services/products.service');
+const productsModel = require('../../../src/models/products.model');
 
 describe('Testa a camada service', function () {
   describe('Testa o método getProducts', function () {
