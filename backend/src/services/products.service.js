@@ -1,7 +1,7 @@
 const model = require('../models/index');
 
 const getProduct = async () => {
-  const products = await model.getProduct();
+  const products = await model.productModel.getAll();
 
   if (!products) {
     return { status: 404, message: 'Products not found' };
@@ -10,8 +10,8 @@ const getProduct = async () => {
   return { status: 200, data: products };
 };
 
-const getProductById = async (id) => {
-  const product = await model.getProductById(id);
+const getProductsById = async (id) => {
+  const product = await model.productModel.getById(id);
 
   if (!product) {
     return { status: 404, message: 'Product not found' };
@@ -22,5 +22,5 @@ const getProductById = async (id) => {
 
 module.exports = {
   getProduct,
-  getProductById,
+  getProductsById,
 };
