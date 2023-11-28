@@ -1,10 +1,10 @@
-const model = require('../models/index');
+const model = require('../models');
 
 const getProduct = async () => {
   const products = await model.productModel.getAll();
 
-  if (!products) {
-    return { status: 404, message: 'Products not found' };
+  if (!products || products.length === 0) {
+    return { status: 404, data: { message: 'Product not found' } };
   }
 
   return { status: 200, data: products };
@@ -13,8 +13,8 @@ const getProduct = async () => {
 const getProductsById = async (id) => {
   const product = await model.productModel.getById(id);
 
-  if (!product) {
-    return { status: 404, message: 'Product not found' };
+  if (!product || product.length === 0) {
+    return { status: 404, data: { message: 'Product not found' } };
   }
 
   return { status: 200, data: product };

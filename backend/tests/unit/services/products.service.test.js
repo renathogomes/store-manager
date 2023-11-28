@@ -18,7 +18,7 @@ describe('Testa o serviço de produtos', function () {
     it('Deve retornar status 404 e mensagem quando nenhum produto é encontrado', async function () {
       sinon.stub(productModel, 'getAll').resolves(null);
       const response = await productService.getProduct();
-      expect(response).to.deep.equal({ status: 404, message: 'Products not found' });
+      expect(response).to.deep.equal({ status: 404, data: { message: 'Product not found' } });
       productModel.getAll.restore();
     });
   });
@@ -36,7 +36,7 @@ describe('Testa o serviço de produtos', function () {
       const id = 999;
       sinon.stub(productModel, 'getById').resolves(null);
       const response = await productService.getProductsById(id);
-      expect(response).to.deep.equal({ status: 404, message: 'Product not found' });
+      expect(response).to.deep.equal({ status: 404, data: { message: 'Product not found' } });
       productModel.getById.restore();
     });
   });
