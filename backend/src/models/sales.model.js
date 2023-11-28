@@ -15,8 +15,8 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  const [[sale]] = await connection.execute(
-    `SELECT SP.sale_id, SP.product_id, SP.quantity, S.date
+  const [sale] = await connection.execute(
+    `SELECT S.date, SP.product_id, SP.quantity
         FROM StoreManager.sales_products AS SP
         INNER JOIN StoreManager.products AS P 
         ON SP.product_id = P.id 
