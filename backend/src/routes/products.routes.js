@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { productController } = require('../controllers');
 
-const { createProductValidation } = require('../middlewares/validations');
+const { createProductValidation } = require('../middlewares/createProductValidation');
 
 router.get('/', productController.getProducts);
 
