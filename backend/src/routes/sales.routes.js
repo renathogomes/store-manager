@@ -6,6 +6,6 @@ const { salesController } = require('../controllers');
 
 router.get('/', salesController.getSales);
 
-router.get('/:id', salesController.getSalesById);
+router.get('/:saleId', salesController.getSalesById);
 
 module.exports = router;

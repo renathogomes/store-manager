@@ -10,8 +10,8 @@ const getSales = async () => {
   return { status: 200, data: sales };
 };
 
-const getSalesById = async (id) => {
-  const sale = await model.salesModel.getById(id);
+const getSalesById = async (saleId) => {
+  const sale = await model.salesModel.getById(saleId);
 
   if (!sale || sale.length === 0) {
     return { status: 404, data: { message: 'Sale not found' } };
