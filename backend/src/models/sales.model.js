@@ -1,3 +1,4 @@
+const camelize = require('camelize');
 const connection = require('./connection');
 
 const getAll = async () => {
@@ -10,7 +11,7 @@ const getAll = async () => {
         ON S.id = SP.sale_id
         ORDER BY sale_id, product_id;`,
   );
-  return sales;
+  return camelize(sales);
 };
 
 const getById = async (id) => {
@@ -24,7 +25,7 @@ const getById = async (id) => {
         WHERE S.id = ?;`,
     [id],
   );
-  return sale;
+  return camelize(sale);
 };
 
 module.exports = {
