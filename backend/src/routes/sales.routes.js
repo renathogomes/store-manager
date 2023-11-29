@@ -4,10 +4,12 @@ const router = express.Router();
 
 const { salesController } = require('../controllers');
 
+const { createSalesValidation } = require('../middlewares/createSalesValidation');
+
 router.get('/', salesController.getSales);
 
 router.get('/:saleId', salesController.getSalesById);
 
-router.post('/', salesController.createSaleController);
+router.post('/', createSalesValidation, salesController.createSaleController);
 
 module.exports = router;
