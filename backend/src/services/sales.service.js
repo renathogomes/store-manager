@@ -20,7 +20,7 @@ const getSalesById = async (saleId) => {
   return { status: 200, data: sale };
 };
 
-const createSale = async (sales) => {
+const createSaleService = async (sales) => {
   const saleId = await model.salesModel.createSales(sales);
 
   return { status: 201,
@@ -34,5 +34,5 @@ const createSale = async (sales) => {
 module.exports = {
   getSales,
   getSalesById,
-  createSale,
+  createSaleService,
 };
