@@ -4,12 +4,20 @@ const router = express.Router();
 
 const { salesController } = require('../controllers');
 
-const { createSalesValidation } = require('../middlewares/createSalesValidation');
+const { productIdSalesValidation,
+  quantitySalesValidation,
+  quantitySalesValidation2 } = require('../middlewares/createSalesValidation');
 
 router.get('/', salesController.getSales);
 
 router.get('/:saleId', salesController.getSalesById);
 
-router.post('/', createSalesValidation, salesController.createSaleController);
+router.post(
+  '/',
+  productIdSalesValidation,
+  quantitySalesValidation,
+  quantitySalesValidation2,
+  salesController.createSaleController,
+);
 
 module.exports = router;
