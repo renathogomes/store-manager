@@ -28,8 +28,22 @@ const createProduct = async (name) => {
   return { status: 201, data: newProduct };
 };
 
+const updateProduct = async (id, name) => {
+  const product = await model.productModel.update(id, name);
+
+  const { newName } = product;
+
+  return { status: 200,
+    data: {
+      id: Number(id),
+      name: newName,
+    },
+  };
+};
+
 module.exports = {
   getProduct,
   getProductsById,
   createProduct,
+  updateProduct,
 };
