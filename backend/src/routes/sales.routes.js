@@ -6,7 +6,8 @@ const { salesController } = require('../controllers');
 
 const { productIdSalesValidation,
   quantitySalesValidation,
-  quantitySalesValidation2 } = require('../middlewares/createSalesValidation');
+  quantitySalesValidation2,
+} = require('../middlewares/createSalesValidation');
 
 router.get('/', salesController.getSales);
 

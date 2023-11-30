@@ -21,14 +21,14 @@ const getSalesById = async (saleId) => {
 };
 
 const createSaleService = async (sales) => {
-  const products = sales.map((product) => model.productsModel.getById(product.productId));
-  const resolveProduct = await Promise.all(products);
+  // const products = sales.map((product) => model.productsModel.getById(product.productId));
+  // const resolveProduct = await Promise.all(products);
 
-  console.log(resolveProduct);
+  // console.log(resolveProduct);
 
-  if (resolveProduct.some((product) => product === null)) {
-    return { status: 404, data: { message: 'Product not found' } };
-  }
+  // if (resolveProduct.some((product) => product === null)) {
+  //   return { status: 404, data: { message: 'Product not found' } };
+  // }
 
   const saleId = await model.salesModel.createSales(sales);
 
