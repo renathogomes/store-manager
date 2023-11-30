@@ -21,7 +21,8 @@ const getSalesById = async (saleId) => {
 };
 
 const createSaleService = async (sales) => {
-  const products = sales.map((product) => model.productsModel.getById(product.productId));
+  const products = sales
+    .map(async (product) => model.productModel.getById(product.productId));
   const resolveProduct = await Promise.all(products);
 
   if (!resolveProduct || resolveProduct.length === 0) {
