@@ -13,7 +13,7 @@ const quantitySalesValidation = (req, res, next) => {
   const { body } = req;
   
   body.forEach((product) => {
-    if (!product.quantity) {
+    if (!product.quantity && product.quantity !== 0) {
       return res.status(400).json({ message: '"quantity" is required' });
     }
   });
