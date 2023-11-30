@@ -21,6 +21,13 @@ const getSalesById = async (saleId) => {
 };
 
 const createSaleService = async (sales) => {
+  const products = sales.map((product) => model.productsModel.getById(product.productId));
+  const resolveProduct = await Promise.all(products);
+
+  if (resolveProduct.some((product) => product === null)) {
+    return { status: 404, data: { message: 'Product not found' } };
+  }
+
   const saleId = await model.salesModel.createSales(sales);
 
   return { status: 201,
