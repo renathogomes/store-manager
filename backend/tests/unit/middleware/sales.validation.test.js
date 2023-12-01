@@ -1,39 +1,59 @@
-const chai = require('chai');
 const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
-const validationFunctions = require('../../../src/middlewares/createSalesValidation'); 
+const { expect } = require('chai');
+const {
+  productIdSalesValidation,
+  quantitySalesValidation,
+  quantitySalesValidation2,
+} = require('../../../src/middlewares/createSalesValidation');
 
-chai.use(sinonChai);
-const { expect } = chai;
+describe('createSalesValidation', function () {
+  it('should return 400 if productId is not provided', function () {
+    const req = { body: [{ productId: undefined }] };
+    const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
+    const next = sinon.stub();
 
-describe('Test the validation functions', function () {
-  afterEach(function () {
-    sinon.restore();
+    productIdSalesValidation(req, res, next);
+
+    expect(res.status.calledWith(400)).to.equal(true);
+    expect(res.json.calledWith({ message: '"productId" is required' })).to.equal(true);
+    expect(next.called).to.equal(false);
   });
 
-  describe('Test the function productIdSalesValidation', function () {
-    it('Should return a 400 error if productId is missing in any product', function () {
-      const req = { body: [{ productId: 1 }, { name: 'Product without productId' }] };
-      const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
-      const next = sinon.stub();
+  it('should return 400 if quantity is not provided', function () {
+    const req = { body: [{ quantity: undefined }] };
+    const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
+    const next = sinon.stub();
 
-      validationFunctions.productIdSalesValidation(req, res, next);
+    quantitySalesValidation(req, res, next);
 
-      expect(res.status).to.have.been.calledWith(400);
-      expect(res.json).to.have.been.calledWith({ message: '"productId" is required' });
-      expect(next).to.have.not.been.called();
-    });
+    expect(res.status.calledWith(400)).to.equal(true);
+    expect(res.json.calledWith({ message: '"quantity" is required' })).to.equal(true);
+    expect(next.called).to.equal(false);
+  });
 
-    it('Should call next if all products have productId', function () {
-      const req = { body: [{ productId: 1 }, { productId: 2 }] };
-      const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
-      const next = sinon.stub();
+  it('should return 422 if quantity is less than or equal to 0', function () {
+    const req = { body: [{ quantity: 0 }] };
+    const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
+    const next = sinon.stub();
 
-      validationFunctions.productIdSalesValidation(req, res, next);
+    quantitySalesValidation2(req, res, next);
 
-      expect(res.status).not.to.have.been.called();
-      expect(res.json).not.to.have.been.called();
-      expect(next).to.have.been.calledOnce();
-    });
+    expect(res.status.calledWith(422)).to.equal(true);
+    expect(res.json.calledWith({ message: '"quantity" must be greater than or equal to 1' })).to.equal(true);
+    expect(next.called).to.equal(false);
+  });
+
+  it('should call next if productId and quantity are provided and quantity is greater than 0', function () {
+    const req = { body: [{ productId: '1', quantity: 1 }] };
+    const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
+    const next = sinon.stub();
+
+    productIdSalesValidation(req, res, next);
+    quantitySalesValidation(req, res, next);
+    quantitySalesValidation2(req, res, next);
+
+    expect(res.status.called).to.equal(false);
+    expect(res.json.called).to.equal(false);
+    expect(next.calledThrice).to.equal(true);
   });
 });

@@ -36,4 +36,21 @@ describe('createProductValidation', function () {
     expect(res.json.calledWith({ message: '"name" length must be at least 5 characters long' })).to.equal(true);
     expect(next.called).to.equal(false);
   });
+
+  it('should call next if name is provided and its length is at least 5', function () {
+    const req = {
+      body: { name: 'abcde' },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    const next = sinon.stub();
+
+    createProductValidation(req, res, next);
+
+    expect(res.status.called).to.equal(false);
+    expect(res.json.called).to.equal(false);
+    expect(next.called).to.equal(true);
+  });
 });
