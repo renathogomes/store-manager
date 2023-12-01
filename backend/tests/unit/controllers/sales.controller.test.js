@@ -7,12 +7,12 @@ const controller = require('../../../src/controllers/sales.controller');
 chai.use(sinonChai);
 const { expect } = chai;
 
-describe('Testa o controlador de vendas', function () {
+describe('Test the sales controller', function () {
   afterEach(function () {
     sinon.restore();
   });
 
-  it('getSalesById deve retornar uma venda pelo id', async function () {
+  it('getSalesById should return a sale by ID', async function () {
     const mockSale = { id: 1, name: 'Sale Test' };
     sinon.stub(serviceSales, 'getSalesById').resolves({ status: 200, data: mockSale });
 
@@ -23,5 +23,18 @@ describe('Testa o controlador de vendas', function () {
     expect(serviceSales.getSalesById).to.have.been.calledWith('1');
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(mockSale);
+  });
+
+  it('createSaleController should create a sale', async function () {
+    const req = { body: { id: 3, name: 'New Sale' } };
+    const mockCreatedSale = { id: 3, name: 'New Sale' };
+    sinon.stub(serviceSales, 'createSaleService').resolves({ status: 201, data: mockCreatedSale });
+  
+    const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
+    await controller.createSaleController(req, res);
+  
+    expect(serviceSales.createSaleService).to.have.been.calledWith(req.body);
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(mockCreatedSale);
   });
 });
