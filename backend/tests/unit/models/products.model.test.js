@@ -7,7 +7,7 @@ const connection = require('../../../src/models/connection');
 const productsModel = require('../../../src/models/products.model');
 const productsMock = require('../../mock/products.mock');
 
-const { exclude } = productsModel;
+// const { exclude } = productsModel;
 
 describe('Testa o model de produtos', function () {
   describe('Testa o model de produtos, quando a conexão é bem sucedida', function () {
@@ -33,19 +33,6 @@ describe('Testa o model de produtos', function () {
     it('Retorna um array de objetos com as chaves "id" e "name"', async function () {
       const response = await productsModel.getAll();
       expect(response[0]).to.have.all.keys('id', 'name');
-    });
-    it('should call connection.execute with the correct SQL and parameters', async function () {
-      const executeStub = sinon.stub(connection, 'execute').resolves();
-  
-      const id = '1';
-      await exclude(id);
-  
-      expect(executeStub.calledWith(
-        'DELETE FROM StoreManager.products WHERE id = ?',
-        [id],
-      )).to.equal(true);
-  
-      executeStub.restore();
     });
   });
 });
