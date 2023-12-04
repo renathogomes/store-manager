@@ -23,4 +23,6 @@ router.post(
 
 router.delete('/:saleId', salesController.deleteSaleController);
 
+router.put('/:saleId/products/:productId/quantity', salesController.updateSaleController);
+
 module.exports = router;
