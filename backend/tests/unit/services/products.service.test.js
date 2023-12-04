@@ -4,6 +4,8 @@ const productService = require('../../../src/services/products.service');
 const productModel = require('../../../src/models/products.model');
 const productsMock = require('../../mock/products.mock');
 
+const { deleteProduct } = productService;
+
 const { expect } = chai;
 
 describe('Testa o serviço de produtos', function () {
@@ -38,6 +40,30 @@ describe('Testa o serviço de produtos', function () {
       const response = await productService.getProductsById(id);
       expect(response).to.deep.equal({ status: 404, data: { message: 'Product not found' } });
       productModel.getById.restore();
+    });
+  });
+  describe('deleteProduct', function () {
+    it('should return 404 if product does not exist', async function () {
+      const getByIdStub = sinon.stub(productModel, 'getById').resolves([]);
+      const id = '1';
+  
+      const result = await deleteProduct(id);
+  
+      expect(result).to.deep.equal({ status: 404, data: { message: 'Product not found' } });
+      getByIdStub.restore();
+    });
+  
+    it('should return 204 and delete the product if it exists', async function () {
+      const getByIdStub = sinon.stub(productModel, 'getById').resolves([{ id: '1', name: 'Product' }]);
+      const excludeStub = sinon.stub(productModel, 'exclude').resolves();
+      const id = '1';
+  
+      const result = await deleteProduct(id);
+  
+      expect(result).to.deep.equal({ status: 204 });
+      expect(excludeStub.calledWith(id)).to.equal(true);
+      getByIdStub.restore();
+      excludeStub.restore();
     });
   });
 });
