@@ -37,4 +37,27 @@ describe('Test the sales controller', function () {
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith(mockCreatedSale);
   });
+  it('should return the status and data from deleteSaleService', async function () {
+    const req = { params: { saleId: '1' } };
+    const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
+    const deleteSaleServiceStub = sinon.stub(serviceSales, 'deleteSaleService').resolves({ status: 200, data: { message: 'Sale deleted' } });
+
+    await controller.deleteSaleController(req, res);
+
+    expect(res.status.calledWith(200)).to.equal(true);
+    expect(res.json.calledWith({ message: 'Sale deleted' })).to.equal(true);
+    deleteSaleServiceStub.restore();
+  });
+
+  it('should return the status and data from updateSaleService', async function () {
+    const req = { params: { saleId: '1', productId: '1' }, body: { quantity: 1 } };
+    const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
+    const updateSaleServiceStub = sinon.stub(serviceSales, 'updateSaleService').resolves({ status: 200, data: { message: 'Sale updated' } });
+
+    await controller.updateSaleController(req, res);
+
+    expect(res.status.calledWith(200)).to.equal(true);
+    expect(res.json.calledWith({ message: 'Sale updated' })).to.equal(true);
+    updateSaleServiceStub.restore();
+  });
 });
