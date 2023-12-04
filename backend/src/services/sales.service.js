@@ -39,8 +39,21 @@ const createSaleService = async (sales) => {
   };
 };
 
+const deleteSaleService = async (saleId) => {
+  const sale = await model.salesModel.getById(saleId);
+
+  if (!sale.length) {
+    return { status: 404, data: { message: 'Sale not found' } };
+  }
+
+  await model.salesModel.deleteSale(saleId);
+
+  return { status: 204, data: { message: 'Sale deleted successfully' } };
+};
+
 module.exports = {
   getSales,
   getSalesById,
   createSaleService,
+  deleteSaleService,
 };
