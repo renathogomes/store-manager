@@ -46,4 +46,53 @@ describe('Testa o modelo de vendas', function () {
     );
     expect(sale).to.deep.equal(mockSale);
   });
+  it('should insert sales and sales_products and return insertId', async function () {
+    const executeStub = sinon.stub(connection, 'execute');
+    executeStub.onFirstCall().resolves([{ insertId: '1' }]);
+    executeStub.onSecondCall().resolves();
+
+    const sales = [{ productId: '1', quantity: 1 }];
+    const insertId = await salesModel.createSales(sales);
+
+    expect(insertId).to.equal('1');
+    expect(executeStub.calledWith(
+      'INSERT INTO StoreManager.sales () VALUES ()',
+    )).to.equal(true);
+    expect(executeStub.calledWith(
+      'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
+      ['1', '1', 1],
+    )).to.equal(true);
+
+    executeStub.restore();
+  });
+
+  it('should delete a sale', async function () {
+    const executeStub = sinon.stub(connection, 'execute').resolves();
+
+    const saleId = '1';
+    await salesModel.deleteSale(saleId);
+
+    expect(executeStub.calledWith(
+      'DELETE FROM StoreManager.sales WHERE id = ?',
+      [saleId],
+    )).to.equal(true);
+
+    executeStub.restore();
+  });
+
+  it('should update a sale', async function () {
+    const executeStub = sinon.stub(connection, 'execute').resolves();
+
+    const saleId = '1';
+    const productId = '1';
+    const quantity = 1;
+    await salesModel.updateSale(saleId, productId, quantity);
+
+    expect(executeStub.calledWith(
+      'UPDATE StoreManager.sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
+      [quantity, saleId, productId],
+    )).to.equal(true);
+
+    executeStub.restore();
+  });
 });
